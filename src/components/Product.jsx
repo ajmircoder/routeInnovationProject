@@ -31,10 +31,11 @@ export default function Product() {
                         setSearchString(e.target.value);
                         setIsProduct(true);
                     }} />
+                    
                 </div>
-                <div className='flex mx-3 py-1 justify-end'>
+                <div className='flex py-1 justify-end'>
                     <button className='flex justify-center items-center p-2 bg-blue-400 rounded-full active:bg-blue-300'>
-                        ${cart.reduce((sum, cur) => sum + cur.price, 0)}
+                        {cart.length ? "$" + cart.reduce((sum, cur) => sum + cur.price, 0) : ""}
                         <img width="20px" className='mx-2' src="https://d3sxshmncs10te.cloudfront.net/icon/free/svg/3112098.svg?token=eyJhbGciOiJoczI1NiIsImtpZCI6ImRlZmF1bHQifQ__.eyJpc3MiOiJkM3N4c2htbmNzMTB0ZS5jbG91ZGZyb250Lm5ldCIsImV4cCI6MTcwODIzOTUyMywicSI6bnVsbCwiaWF0IjoxNzA3OTgwMzIzfQ__.fde1a610aebf72ca79cc0bc9447609b9a4e8e5daaa31ba60a243d299debc67fb" alt="" />
                     </button>
                     <select onChange={(e) => {
@@ -51,11 +52,14 @@ export default function Product() {
                         } else { 
                             setProducts((pvr) => pvr.toSorted((a, b) => defultOrder.indexOf(a.id) - defultOrder.indexOf(b.id)))
                         }
-                    }} className='bg-red-400' name="" id="">
+                    }} className=' bg-green-400 rounded-xl ml-1' name="" id="">
                         <option value="Defult">Defult</option>
                         <option value="Low_to_high">Low To High</option>
                         <option value="Hight_to_Low">High To Low</option>
                     </select>
+                    <a href="/login"><button className=' bg-slate-500 text-white px-2 py-1 rounded-lg ml-1' onClick={()=>{
+                        localStorage.removeItem('user');
+                    }}>Log Out</button></a>
                 </div>
             </div>
             <div className='xl:px-24 md:pt-2 bg-slate-200 w-full'>

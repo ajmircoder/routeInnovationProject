@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../CSS/login.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login({setIsUser}) {
+export default function Login() {
+    const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState();
+    const [message, setMessage] = useState('');
     const getUser = () => {
         fetch('https://dummyjson.com/auth/login', {
             method: 'POST',
@@ -15,10 +18,14 @@ export default function Login({setIsUser}) {
             })
         }).then(res => res.json())
         .then(data => {
-            if(data.message == 'Invalid credentials') setIsUser(false);
-            else {
+            if(data.id && data.username){
                 setUser(data);
-                setIsUser(true)
+                localStorage.setItem('user', JSON.stringify(data));
+                if(data){
+                    navigate('/');
+                }
+            }else{
+                setMessage("Invalid credentials");
             }
         });
     }
@@ -40,9 +47,8 @@ export default function Login({setIsUser}) {
                     onChange={(e)=>{
                         setPassword(e.target.value);
                     }}/>
-                <button className='loginBtn' onClick={()=>{
-                    getUser();
-                }} 
+                <p className='text-white'>{message ? message : ''}</p>
+                <button className='loginBtn' onClick={getUser} 
                 >Log In</button>
             </form>
         </div>
